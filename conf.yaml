@@ -1,0 +1,13 @@
+# conf.yaml
+---
+
+# List of packages to build, in build order. Note that, with the exception of
+# platform/arch/os packages, packages will be ignored if they aren't referred
+# to in the `requires` section of the target CY (see `recipes/vfx_reference_platform/CY*`)
+#
+packages:
+  - platform
+  - arch
+  - os
+  - python
+  # TODO
