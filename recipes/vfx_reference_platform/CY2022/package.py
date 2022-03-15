@@ -28,9 +28,7 @@ requires = [
     "~aces-1.3",
     "~boost-1.76",
     "~tbb-2020.update3",
-    "~mkl-2020",
-    # TODO compiler support? We should allow for both cases, one where compiler
-    # is system provided and one where it's a rez package
+    "~mkl-2020"
 ]
 
 build_command = False
