@@ -1,14 +1,18 @@
 # conf.yaml
 ---
 
-# List of names of packages to build, in build order. Note that, with the exception
-# of platform/arch/os packages, packages will be ignored if they aren't referred
-# to in the `requires` section of the target CY (see `recipes/vfx_reference_platform/CY*`)
+# List of names of packages to build, in build order.
+# We may choose to build non-vfx-platform-specific packages of sufficient utility,
+# but whose specific version is not necessarily tracked or managed by the VRP,
+# and as such, should only be considered version controlled as VRP projects require.
+# (For example, we will rely on cmake - The VRP does not require cmake, but we will,
+# even though you could absolutely rely on a system-level rez-bind'd cmake version.
 #
 packages:
   - platform
   - arch
   - os
+  - cmake
   - python
   # TODO
 
