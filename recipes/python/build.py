@@ -29,32 +29,30 @@ CONFIGURE_OPTS = {
                               "--without-ensurepip "
 }
 
-def build():
-    build_config = BuildConfig()
 
+def build():
     if not build_config.is_installing:
         raise SystemExit("ERROR: This build must be run in a mode which would install or release it")
 
     source_tar = os.path.join(build_config.source_path, SOURCE_TAR.format(version=build_config.package_version))
 
-    _build_and_install_payload(build_config, source_tar)
-    _create_unversioned_python_symlink(build_config)
+    _build_and_install_payload(source_tar)
+    _create_unversioned_python_symlink()
 
     if build_config.is_releasing:
-        _lock_payload(build_config)
+        _lock_payload()
 
-def _build_and_install_payload(config, source_tar):
-    cmake_file = os.path.join(config.build_path, "CMakeLists.txt")
+def _build_and_install_payload(source_tar):
+    cmake_file = os.path.join(build_config.build_path, "CMakeLists.txt")
     with open(cmake_file, "w") as outstream:
-        _generate_cmakelists(config, source_tar, stream=outstream)
+        _generate_cmakelists(source_tar, stream=outstream)
 
-    subprocess.check_call(["cmake", "."], cwd=config.build_path)
-    subprocess.check_call(["make"], cwd=config.build_path)
+    subprocess.check_call(["cmake", "."], cwd=build_config.build_path)
+    subprocess.check_call(["make"], cwd=build_config.build_path)
 
-def _generate_cmakelists(build_config, source_tar, stream=sys.stdout):
+def _generate_cmakelists(source_tar, stream=sys.stdout):
     """
     Args:
-        build_config (`BuildConfig`): Build configuration
         source_tar (str): Path to source tarball
         stream (file): Output file stream
     """
@@ -91,12 +89,12 @@ ExternalProject_Add(
         )
     )
 
-def _create_unversioned_python_symlink(build_config):
+def _create_unversioned_python_symlink():
     python_link = os.path.join(build_config.package_path, "bin", "python")
     if not os.path.lexists(python_link):
         os.symlink("python{major}".format(major=self.package_version.split('.')[0]), python_link)
 
-def _lock_payload(build_config):
+def _lock_payload():
     path = os.path.dirname(build_config.package_path)
     subprocess.check_call(["/bin/chmod", "-R", "a-w", path])
 
@@ -126,5 +124,8 @@ class BuildConfig(object):
         )
         return desc
 
+build_config = BuildConfig()
+
 if __name__ == "__main__":
     build()
+
