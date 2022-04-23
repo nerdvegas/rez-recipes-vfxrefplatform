@@ -1,6 +1,9 @@
 # rez
 build
 
+# src files
+recipes/*/src/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
