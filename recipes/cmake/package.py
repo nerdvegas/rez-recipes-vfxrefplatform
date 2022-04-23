@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
-@early()
-def name():
-    import os
-    name = os.path.basename(os.path.dirname(os.getcwd()))
-    return name
+name = "cmake"
 
 @early()
 def version():
@@ -15,7 +11,7 @@ def version():
 @early()
 def uuid():
     import uuid
-    return str(uuid.uuid5(uuid.NAMESPACE_DNS, name()))
+    return str(uuid.uuid5(uuid.NAMESPACE_DNS, name))
 
 description = \
     """
@@ -76,7 +72,8 @@ private_build_requires = [
 ]
 
 build_command = "python {root}/build.py {install}"
-#build_command = "/bin/true" # temp while I work on the definition
+
+hashed_variants = True
 
 @early()
 def variants():
